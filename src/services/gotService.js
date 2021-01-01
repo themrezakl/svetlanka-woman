@@ -1,5 +1,5 @@
 export default class GotService {
-  consrtuctor() {
+  constructor() {
     this._apiBase = 'https://anapioficeandfire.com/api';
   }
 
@@ -13,27 +13,75 @@ export default class GotService {
     return await res.json();
   }
 
-  getAllCharacters() {
-    return this.getResource(`/characters?page=5&pageSize=10`);
+  async getAllCharacters() {
+    const res = await this.getResource(`/characters?page=5&pageSize=10`);
+    return res.map(this._transformCharacter);
   }
 
-  getCharacter(id) {
-    return this.getResource(`/characters/${id}`);
+  async getCharacter(id) {
+    const character = await this.getResource(`/characters/${id}`);
+    return this._transformCharacter(character);
   }
 
-  getAllHouses() {
-    return this.getResource(`/houses?page=5&pageSize=10`);
+  async getAllHouses() {
+    const res = await this.getResource(`/houses/`);
+    return res.map(this._transformHouse);
   }
 
-  getHouse(id) {
-    return this.getResource(`/houses/${id}`);
+  async getHouse(id) {
+    const house = await this.getResource(`/houses/${id}`);
+    return this._transformHouse(house);
   }
 
-  getAllBooks() {
-    return this.getResource(`/books?page=5&pageSize=10`);
+  async getAllBooks() {
+    const res = await this.getResource(`/books/`);
+    return res.map(this._transformBook);
   }
 
-  getBook(id) {
-    return this.getResource(`/books/${id}`);
+  async getBook(id) {
+    const book = await this.getResource(`/books/${id}`);
+    return this._transformBook(book);
+  }
+
+  _changeEmptyProp (obj) {
+    for (let key in obj) {
+      if (obj[key] === '') {
+        obj[key] = 'not available';
+      } 
+    }
+    return obj;
+  }
+
+  _transformCharacter(char) {
+    this._changeEmptyProp(char);
+    return {
+      name: char.name,
+      gender: char.gender,
+      born: char.born,
+      died: char.died,
+      culture: char.culture
+    }
+  }
+
+  _transformHouse(house) {
+    this._changeEmptyProp(house);
+    return {
+      name: house.name,
+      region: house.gender,
+      words: house.born,
+      titles: house.died,
+      overlord: house.culture,
+      ancestralWeapons: house.ancestralWeapons
+    }
+  }
+
+  _transformBook(book) {
+    this._changeEmptyProp(book);
+    return {
+      name: book.name,
+      numberOfPages: book.numberOfPages,
+      publiser: book.publiser,
+      released: book.released
+    }
   }
 }
