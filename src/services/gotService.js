@@ -46,7 +46,7 @@ export default class GotService {
   _changeEmptyProp (obj) {
     for (let key in obj) {
       if (obj[key] === '') {
-        obj[key] = 'not available';
+        obj[key] = 'no data';
       } 
     }
     return obj;
