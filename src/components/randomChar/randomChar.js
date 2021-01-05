@@ -4,10 +4,6 @@ import GotService from '../../services/gotService';
 import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
 export default class RandomChar extends Component {
-    constructor() {
-        super();
-        this.updateChar(); //вызов метода 
-    }
     
     gotService = new GotService();
 
@@ -17,6 +13,15 @@ export default class RandomChar extends Component {
         error: false
     }   // ES9+ Новый синтаксис записи состояний компонента
 
+    componentDidMount() {  //хук появления компонента на странице
+        this.updateChar(); //вызов метода
+        this.timerId = setInterval(this.updateChar, 1500);
+    }
+
+    componentWillUnmount() { //хук удаления компонента со страницы
+        clearInterval(this.timerId);
+    }
+    
     onCharLoaded = (char) => {
         this.setState({
             char, 
@@ -30,7 +35,7 @@ export default class RandomChar extends Component {
         })
     }
 
-    updateChar() {
+    updateChar = () => { 
         const id = Math.floor(Math.random()*140 + 25); // рандомное число от 25 до 140
         // const id = 150000; // создание ошибки для проверки 
         this.gotService.getCharacter(id)

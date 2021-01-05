@@ -43,7 +43,7 @@ export default class GotService {
     return this._transformBook(book);
   }
 
-  _changeEmptyProp (obj) {
+  changeEmptyProp(obj) {
     for (let key in obj) {
       if (obj[key] === '') {
         obj[key] = 'no data';
@@ -52,9 +52,12 @@ export default class GotService {
     return obj;
   }
 
-  _transformCharacter(char) {
-    this._changeEmptyProp(char);
+  _transformCharacter = (char) => {
+    this.changeEmptyProp(char);
+    const index = char.url.lastIndexOf("/");
+    const charId = char.url.slice(index + 1);
     return {
+      id: charId,
       name: char.name,
       gender: char.gender,
       born: char.born,
@@ -63,8 +66,8 @@ export default class GotService {
     }
   }
 
-  _transformHouse(house) {
-    this._changeEmptyProp(house);
+  _transformHouse = (house) => {
+    this.changeEmptyProp(house);
     return {
       name: house.name,
       region: house.gender,
@@ -75,8 +78,8 @@ export default class GotService {
     }
   }
 
-  _transformBook(book) {
-    this._changeEmptyProp(book);
+  _transformBook = (book) => {
+    this.changeEmptyProp(book);
     return {
       name: book.name,
       numberOfPages: book.numberOfPages,
