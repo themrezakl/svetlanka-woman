@@ -3,7 +3,7 @@ export default class GotService {
     this._apiBase = 'https://anapioficeandfire.com/api';
   }
 
-  async getResource(url) {
+  getResource = async (url) => {
     const res = await fetch(`${this._apiBase}${url}`);
 
     if (!res.ok) {
@@ -13,37 +13,37 @@ export default class GotService {
     return await res.json();
   }
 
-  async getAllCharacters() {
+  getAllCharacters = async () => {
     const res = await this.getResource(`/characters?page=5&pageSize=10`);
     return res.map(this._transformCharacter);
   }
 
-  async getCharacter(id) {
+  getCharacter = async (id) => {
     const character = await this.getResource(`/characters/${id}`);
     return this._transformCharacter(character);
   }
 
-  async getAllHouses() {
+  getAllHouses = async () => {
     const res = await this.getResource(`/houses/`);
     return res.map(this._transformHouse);
   }
 
-  async getHouse(id) {
+  getHouse = async (id) => {
     const house = await this.getResource(`/houses/${id}`);
     return this._transformHouse(house);
   }
 
-  async getAllBooks() {
+  getAllBooks = async () => {
     const res = await this.getResource(`/books/`);
     return res.map(this._transformBook);
   }
 
-  async getBook(id) {
+  getBook = async (id) => {
     const book = await this.getResource(`/books/${id}`);
     return this._transformBook(book);
   }
 
-  changeEmptyProp(obj) {
+  changeEmptyData(obj) {
     for (let key in obj) {
       if (obj[key] === '') {
         obj[key] = 'no data';
@@ -51,9 +51,32 @@ export default class GotService {
     }
     return obj;
   }
+  // isSet(data) {
+  //   if (data) {
+  //     return data
+  //   } else {
+  //     return 'no data'
+  //   }
+  // }
+
+  // _extractId = (item) => {
+  //   const idRegExp = /\/([0-9]*)$/;
+  //   return item.url.match(idRegExp)[1];
+  // }
+
+  // _transformCharacter = (char) => {
+  //   return {
+  //     id: this._extractId(char),
+  //     name: this.isSet(char.name),
+  //     gender: this.isSet(char.gender),
+  //     born: this.isSet(char.born),
+  //     died: this.isSet(char.died),
+  //     culture: this.isSet(char.culture)
+  //   }
+  // }
 
   _transformCharacter = (char) => {
-    this.changeEmptyProp(char);
+    this.changeEmptyData(char);
     const index = char.url.lastIndexOf("/");
     const charId = char.url.slice(index + 1);
     return {

@@ -54,6 +54,26 @@ export default class App extends Component {
                         </Col>
                     </Row>
                     <CharacterPage/>
+                    {/* <Row>
+                        <Col md='6'>
+                            <ItemList 
+                            onItemSelected={this.onItemSelected}
+                            getData={this.gotService.getAllBooks}  
+                            renderItem={(item}) => (<><span>{item.name}<buton>Click me<button/></span></>)}/> //передавать также можно и JSX разметку
+                            //рендер-функция для передачи элементов рендеринга из вне компонента
+                        </Col>
+                        <Col md='6'>
+                            <CharDetails charId={this.state.selectedChar}/>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md='6'>
+                            <ItemList onItemSelected={this.onItemSelected}/>
+                        </Col>
+                        <Col md='6'>
+                            <CharDetails charId={this.state.selectedChar}/>
+                        </Col>
+                    </Row> */}
                 </Container>
             </>
         );
