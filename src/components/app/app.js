@@ -3,6 +3,8 @@ import {Col, Row, Container, Button} from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
 import CharacterPage from '../characterPage';
+import HousesPage from '../housesPage/housesPage';
+import BooksPage from '../booksPage/booksPage';
 import ErrorMessage from '../errorMessage';
 import './app.css';
 
@@ -53,22 +55,16 @@ export default class App extends Component {
                             </Button>
                         </Col>
                     </Row>
-                    <CharacterPage/>
+                    <CharacterPage />
+                    <HousesPage />
+                    <BooksPage />
                     {/* <Row>
                         <Col md='6'>
                             <ItemList 
                             onItemSelected={this.onItemSelected}
                             getData={this.gotService.getAllBooks}  
-                            renderItem={(item}) => (<><span>{item.name}<buton>Click me<button/></span></>)}/> //передавать также можно и JSX разметку
+                            renderItem={(item) => (<><span>{item.name}<buton>Click me<button/></span></>)}/> //передавать также можно и JSX разметку
                             //рендер-функция для передачи элементов рендеринга из вне компонента
-                        </Col>
-                        <Col md='6'>
-                            <CharDetails charId={this.state.selectedChar}/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md='6'>
-                            <ItemList onItemSelected={this.onItemSelected}/>
                         </Col>
                         <Col md='6'>
                             <CharDetails charId={this.state.selectedChar}/>

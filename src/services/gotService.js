@@ -24,12 +24,13 @@ export default class GotService {
   }
 
   getAllHouses = async () => {
-    const res = await this.getResource(`/houses/`);
+    const res = await this.getResource(`/houses?page=6&pageSize=10/`);
     return res.map(this._transformHouse);
   }
 
   getHouse = async (id) => {
     const house = await this.getResource(`/houses/${id}`);
+    console.log(house);
     return this._transformHouse(house);
   }
 
@@ -43,15 +44,24 @@ export default class GotService {
     return this._transformBook(book);
   }
 
-  changeEmptyData(obj) {
-    for (let key in obj) {
-      if (obj[key] === '') {
-        obj[key] = 'no data';
+  changeEmptyData(item) {
+    for (let key in item) {
+      if (Array.isArray(item[key])) {
+        item[key] = item[key].join(", ");
+      }
+      if (item[key] === '') {
+        item[key] = 'no data';
       } 
     }
-    return obj;
+    return item;
   }
-  // isSet(data) {
+
+  _extractId = (item) => {
+    const index = item.url.lastIndexOf("/");
+    const id = item.url.slice(index + 1);
+    return id;
+  }
+  // isSet(data) { //другой вариант 
   //   if (data) {
   //     return data
   //   } else {
@@ -77,10 +87,8 @@ export default class GotService {
 
   _transformCharacter = (char) => {
     this.changeEmptyData(char);
-    const index = char.url.lastIndexOf("/");
-    const charId = char.url.slice(index + 1);
     return {
-      id: charId,
+      id: this._extractId(char),
       name: char.name,
       gender: char.gender,
       born: char.born,
@@ -90,23 +98,25 @@ export default class GotService {
   }
 
   _transformHouse = (house) => {
-    this.changeEmptyProp(house);
+    this.changeEmptyData(house);
     return {
+      id: this._extractId(house),
       name: house.name,
-      region: house.gender,
-      words: house.born,
-      titles: house.died,
-      overlord: house.culture,
+      region: house.region,
+      words: house.words,
+      titles: house.titles,
+      overlord: house.overlord,
       ancestralWeapons: house.ancestralWeapons
     }
   }
 
   _transformBook = (book) => {
-    this.changeEmptyProp(book);
+    this.changeEmptyData(book);
     return {
+      id: this._extractId(book),
       name: book.name,
       numberOfPages: book.numberOfPages,
-      publiser: book.publiser,
+      publisher: book.publisher,
       released: book.released
     }
   }

@@ -1,57 +1,54 @@
 import React, {Component} from 'react';
-import './charDetails.css';
-import GotService from '../../services/gotService';
+import './itemDetails.css';
 
-const Field = ({char, field, label}) => {
+const Field = ({item, field, label}) => {
     return (
         <li className="list-group-item d-flex justify-content-between">
             <span className="term">{label}</span>
-            <span>{char[field]}</span>
+            <span>{item[field]}</span>
         </li>
     )
 }
 
 export {Field};
 
-export default class CharDetails extends Component {
-
-    gotService = new GotService();
+export default class ItemDetails extends Component {
 
     state = {
-        char: null
+        item: null
     }
 
     componentDidMount() {
-        this.updateChar();
+        this.updateItem();
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.charId !== prevProps.charId) { //всегда нужно делать эту проверку соответствия с предыдущими props
-            this.updateChar();
+        if (this.props.itemId !== prevProps.itemId) { //всегда нужно делать эту проверку соответствия с предыдущими props
+            this.updateItem();
         }   
     }
 
-    updateChar() {
-        const {charId} = this.props;
+    updateItem() {
+        const {itemId, getItem} = this.props;
 
-        if (!charId) {
+        if (!itemId) {
             return;
         }
 
-        this.gotService.getCharacter(charId)
-            .then((char) => {
-                this.setState({char})
+        getItem(itemId)
+            .then(item => {
+                this.setState({item})
             })
         // this.foo.bar = 0; //для проверки на ошибку
     }
 
     render() {
-        if (!this.state.char) {
+        if (!this.state.item) {
             return <span className='select-error'>Please select a character</span>
         }
 
-        const {char} = this.state;
-        const {name} = char;
+        const {item} = this.state;
+        const {name} = item;
 
         return (
             <div className="char-details rounded">
@@ -59,7 +56,7 @@ export default class CharDetails extends Component {
                 <ul className="list-group list-group-flush">
                     {
                         React.Children.map(this.props.children, (child) => { //перебирает всех детей компонента на уровне выше
-                            return React.cloneElement(child, {char})  // клонирует ребенка, добавляя к его свойствам char
+                            return React.cloneElement(child, {item})  // клонирует ребенка, добавляя к его свойствам char
                         })  //
                     } 
                     {/* Pattern3 - {this.props.children} передает все компоненты, 
